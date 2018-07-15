@@ -82,6 +82,8 @@ direction.
 
 ## Installation
 
+Requires vim 8.0.1364 or neovim (exact version uncertain).
+
 If you use [vim-plug](https://github.com/junegunn/vim-plug), then add the
 following line to your vimrc file:
 
@@ -142,6 +144,11 @@ to unpredictable results.  For example, plugins which rely on `w:`
 variables being set in particular ways may have trouble.
 
 If you notice any problems, please open an issue.
+
+## Self-promotion
+
+Check out my other plugin,
+[match-up](https://github.com/andymass/vim-matchup).
 
 ## Acknowledgments
 

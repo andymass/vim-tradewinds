@@ -1,4 +1,4 @@
-*trdwnds.txt*    the missing window movement
+*tradewinds.txt*    the missing window movement
 *tradewinds* *trade-winds*
 
 Author:  Andy Massimino <a@normed.space>
