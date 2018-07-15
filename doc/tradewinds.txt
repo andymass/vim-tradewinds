@@ -166,10 +166,10 @@ instance,
 <
 If you want full control, make your own mappings
 >
-    nnoremap <leader>h <plug>(tradewinds-softmove-h)
-    nnoremap <leader>j <plug>(tradewinds-softmove-j)
-    nnoremap <leader>k <plug>(tradewinds-softmove-k)
-    nnoremap <leader>l <plug>(tradewinds-softmove-l)
+    nnoremap <leader>h <plug>(tradewinds-h)
+    nnoremap <leader>j <plug>(tradewinds-j)
+    nnoremap <leader>k <plug>(tradewinds-k)
+    nnoremap <leader>l <plug>(tradewinds-l)
 <
 trade winds won't try to make its usual maps if you have made your own,
 and it wont step on your existing maps.
