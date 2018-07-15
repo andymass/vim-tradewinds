@@ -86,6 +86,7 @@ function! tradewinds#softmove(dir) abort
 
   " now close the old window
   execute win_id2win(l:winid).'wincmd c'
+  let l:winid = win_getid(winnr())
 
   " restore window options
   " but not statusline because it causes more trouble than it's worth
@@ -97,6 +98,12 @@ function! tradewinds#softmove(dir) abort
 
   " restore view
   call winrestview(l:view)
+
+  " try to fix the prior window CTRL-W p
+  if l:lastwinid > 0
+    call win_gotoid(l:lastwinid)
+    call win_gotoid(l:winid)
+  endif
 
   if exists('#User#TradeWindsAfterVoyage')
     doautocmd <nomodeline> User TradeWindsAfterVoyage
