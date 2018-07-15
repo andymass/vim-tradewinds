@@ -1,0 +1,212 @@
+*trdwnds.txt*    the missing window movement
+*tradewinds* *trade-winds*
+
+Author:  Andy Massimino <a@normed.space>
+Web:     https://github.com/andymass/vim-tradewinds
+License: MIT license {{{
+
+  Copyright (c) 2018 Andy Massimino
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this  software and  associated documentation  files (the  "Software"), to
+  deal in the  Software without restriction, including  without limitation the
+  rights to use, copy, modify,  merge, publish, distribute, sublicense, and/or
+  sell copies of the  Software, and to permit persons to  whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright  notice and this permission notice shall  be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS  PROVIDED "AS IS", WITHOUT WARRANTY OF  ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING  BUT NOT  LIMITED TO  THE WARRANTIES  OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS  OR COPYRIGHT  HOLDERS BE  LIABLE FOR  ANY CLAIM,  DAMAGES OR  OTHER
+  LIABILITY,  WHETHER IN  AN ACTION  OF CONTRACT,  TORT OR  OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+
+}}}
+
+==============================================================================
+CONTENTS                                                  *tradewinds-contents*
+
+  Introduction                                  |tradewinds-introduction|
+  Mappings                                      |tradewinds-mappings|
+    Custom maps                                 |tradewinds-custom-maps|
+  Customization                                 |tradewinds-customization|
+  Acknowledgments                               |tradewinds-acknowledgments|
+
+==============================================================================
+INTRODUCTION                                          *tradewinds-introduction*
+
+The missing window movement.
+
+This plugin is best explained with a diagram.  In the following example,
+suppose you are in "current win" and would like to move it beneath the
+left most window.  This normally would require you to move to the left
+window, split it, open the correct buffer, and then finally close the
+original window.
+
+trade winds simplifies this procedure by introducing a series of maps
+which allow you to move windows into other windows, causing them to be
+split.  They are `ctrl-w g` followed by the usual `hjkl` motions.
+>
+  +-------------+---------------+           +-------------+---------------+
+  |             |               |           |             |               |
+  |             |               |           |             |               |
+  |             +---------------+           |             |               |
+  |             |               | ctrl-w gh |             +---------------+
+  |             |               |           |             |               |
+  |             +---------------+           +-------------+               |
+  |             |               | +-------> |             |               |
+  |             |  current win  |           | current win |               |
+  |             |               |           |             |               |
+  +-------------+---------------+           +-------------+---------------+
+<
+This is referred to as a soft move, as opposed to vim's hard moves
+`ctrl-w HJKL` which place windows as far as possible in the given
+direction.
+
+Likewise, if you would like to move windows down into a split,
+>
+  +-------------+-------+-------+           +-----------------+-----------+
+  |             |       |       |           |                 |           |
+  |             |       |       |           |                 |           |
+  | current win |       |       |           |                 |           |
+  |             |       |       | ctrl-w gj |                 |           |
+  |             |       |       |           |                 |           |
+  +-------------+-------+-------+           +-------------+---+-----------+
+  |                             | +-------> |             |               |
+  |                             |           | current win |               |
+  |                             |           |             |               |
+  +-----------------------------+           +-------------+---------------+
+<
+trade winds also locally converts horizontal splits into vertical ones and
+vice-versa.
+>
+  +---+-----------------+-------+           +---+---------+-------+-------+
+  |   |                 |       |           |   |         |       |       |
+  |   |                 |   4   |           | 1 | current | some  |       |
+  |   |   current win   |       |           |   | win     | buffer|       |
+  |   |                 |       | ctrl-w gj |   |         |       |       |
+  |   |                 |       |           |   |         |       |       |
+  |   +-----------------+       |           +   |         |       |       |
+  |   |                 |       | +-------> |   |         |       |       |
+  |   |   some buffer   |       |           |   |         |       |       |
+  |   |                 |       |           |   |         |       |       |
+  +---+-----------------+-------+           +---+---------+-------+-------+
+<
+Of course, you may have to resize the windows yourself.  You may prefer
+to use the option |equalalways|.
+
+If the window is already touching a side of the tab page, `ctrl-w gh`
+behaves just like `ctrl-w H` (etc).  This means if you use a soft move
+repeatedly, a window will eventually end up all the way in a particular
+direction.
+>
+  +-------------+-------+-------+           +-------------+-------+-------+
+  |             |       |       |           |             |       |       |
+  |             |       |       |           |             |       |       |
+  | current win |       |       |           |             |       |       |
+  |             |       |       | ctrl-w gh |             |       |       |
+  |             |       |       |           | current win |       |       |
+  |-------------+-------+-------|           |             +-------+-------+
+  |                             | +-------> |             |               |
+  |                             |           |             |               |
+  |                             |           |             |               |
+  +-----------------------------+           +-------------+---------------+
+<
+==============================================================================
+MAPPINGS                                                  *tradewinds-mappings*
+
+                                                                   *CTRL-W_gk*
+CTRL-W g k  Move the current window to a new vertical split of the window
+    above the current window.  This is similar to using |CTRL-W_k|
+    to move to a different window, creating a new split using
+    ":vsplit" but having the same contents as the previous window,
+    and then closing the previous window.  If there is no window
+    above the current window, this behaves like |CTRL-W_K|.
+
+                                                                   *CTRL-W_gj*
+CTRL-W g j  Move the current window to a new vertical split of the window
+    above the current window.  This is similar to using |CTRL-W_j|
+    to move to a different window, creating a new split with
+    ":vsplit" but having the same contents as the previous window,
+    and then closing the previous window.  If there is no window
+    below the current window, this behaves like |CTRL-W_J|.
+
+                                                                   *CTRL-W_gh*
+CTRL-W g h  Move the current window to a new horizontal split of the window
+    left of the current window.  This is similar to using |CTRL-W_h|
+    to move to a different window, creating a new split with
+    ":vsplit" but having the same contents as the previous window,
+    and then closing the previous window.  If there is no window
+    to the left of the current window, this behaves like |CTRL-W_H|.
+
+                                                                   *CTRL-W_gl*
+CTRL-W g l  Move the current window to a new horizontal split of the window
+    right of the current window.  This is similar to using |CTRL-W_l|
+    to move to a different window, creating a new split with
+    ":vsplit" but having the same contents as the previous window,
+    and then closing the previous window.  If there is no window
+    to the right of the current window, this behaves like |CTRL-W_L|.
+
+------------------------------------------------------------------------------
+Mapping customization~
+                                                       *tradewinds-custom-maps*
+
+To disable all maps, use 
+>
+    let g:tradewinds_no_maps = 1
+<
+If you would like to change the map prefix from `ctrl-w g`, use for
+instance,
+>
+    let g:tradewinds_prefix = '<c-w>e'
+<
+If you want full control, make your own mappings
+>
+    nnoremap <leader>h <plug>(tradewinds-softmove-h)
+    nnoremap <leader>j <plug>(tradewinds-softmove-j)
+    nnoremap <leader>k <plug>(tradewinds-softmove-k)
+    nnoremap <leader>l <plug>(tradewinds-softmove-l)
+<
+trade winds won't try to make its usual maps if you have made your own,
+and it wont step on your existing maps.
+
+==============================================================================
+CUSTOMIZATION                                        *tradewinds-customization*
+
+Before moving a window, trade winds looks for a variable named
+`g:tradewinds#prepare`.  This can be set to a reference or name of a
+function which takes two arguments: the current window number and the
+target window number.  Returning 1 will cancel the movement.
+
+After a window move is performed, trade winds fires the `User` autocmd
+`TradeWindsAfterVoyage`.  This can be used, for example, to fix up
+statuslines or other window properties:
+>
+    autocmd User TradeWindsAfterVoyage call DoSomething()
+<
+==============================================================================
+CAVEATS                                                    *tradewinds-caveats*
+
+The windows are not actually moving.  Instead, a new window is created
+containing the correct buffer and then old one is closed.  This could lead
+to unpredictable results.  For example, plugins which rely on `w:`
+variables being set in particular ways may have trouble.
+
+If you notice any problems, please open an issue.
+
+==============================================================================
+ACKNOWLEDGMENTS                                     *tradewinds-acknowledgments*
+
+
+This plugin was inspired by Scott Pierce's [vim-window][1].  In that
+plugin, the `ctrl-w g[hjkl]` are referred to as "glue window" and behave
+very differently.
+
+[1]: https://github.com/ddrscott/vim-window
+
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:
