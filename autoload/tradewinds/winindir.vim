@@ -47,8 +47,6 @@ function! s:WinIsInDir(winnr, dir)
     let l:touches = l:this.right == l:other.left - 2
     " extend one down for statusline
     let l:cursor = s:Between(l:other.top, l:other.bottom + 1, l:curpos[0])
-  elseif a:dir ==# 'w'
-    return a:winnr == winnr() + 1 || winnr('$') == winnr() && a:winnr == 1
   endif
 
   return l:touches && l:cursor

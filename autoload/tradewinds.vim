@@ -4,6 +4,9 @@
 " Email:      a@normed.space
 "
 
+let s:save_cpo = &cpo
+set cpo&vim
+
 function! tradewinds#softmove(dir) abort
   if len(a:dir) != 1 || stridx('hjkl', a:dir) < 0
     return
@@ -109,6 +112,8 @@ function! tradewinds#softmove(dir) abort
     doautocmd <nomodeline> User TradeWindsAfterVoyage
   endif
 endfunction
+
+let &cpo = s:save_cpo
 
 " vim: fdm=marker sw=2
 
