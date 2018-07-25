@@ -123,6 +123,16 @@ nmap <leader>l <plug>(tradewinds-l)
 trade winds won't try to make its usual maps if you have made your own,
 and it wont step on your existing maps.
 
+Alternatively, you can make maps which use the `TradewindsMove` command:
+```vim
+let g:tradewinds_no_maps = 1
+
+nnoremap <silent> <c-w>g<left>  :TradewindsMove h<cr>
+nnoremap <silent> <c-w>g<down>  :TradewindsMove j<cr>
+nnoremap <silent> <c-w>g<up>    :TradewindsMove k<cr>
+nnoremap <silent> <c-w>g<right> :TradewindsMove l<cr>
+```
+
 ## Customization
 
 Before moving a window, trade winds looks for a variable named
