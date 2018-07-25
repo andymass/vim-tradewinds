@@ -114,10 +114,10 @@ let g:tradewinds_prefix = '<c-w>e'
 
 If you want full control, make your own mappings
 ```vim
-nnoremap <leader>h <plug>(tradewinds-h)
-nnoremap <leader>j <plug>(tradewinds-j)
-nnoremap <leader>k <plug>(tradewinds-k)
-nnoremap <leader>l <plug>(tradewinds-l)
+nmap <leader>h <plug>(tradewinds-h)
+nmap <leader>j <plug>(tradewinds-j)
+nmap <leader>k <plug>(tradewinds-k)
+nmap <leader>l <plug>(tradewinds-l)
 ```
 
 trade winds won't try to make its usual maps if you have made your own,
