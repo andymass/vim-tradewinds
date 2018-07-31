@@ -78,11 +78,8 @@ function! tradewinds#softmove(dir) abort
   " go to the target window
   call win_gotoid(l:targetid)
 
-  " ..and make the split
-  execute l:flags 'new'
-
-  " edit existing buffer
-  silent execute 'buffer' l:bufnr
+  " ..and make the split (and edit existing buffer)
+  silent execute l:flags 'split #'.l:bufnr
 
   " restore window variables
   call extend(w:, l:vars)
