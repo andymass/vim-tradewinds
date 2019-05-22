@@ -43,6 +43,7 @@ function! tradewinds#softmove(dir) abort
   " hard HJKL movements can be used here
   if l:target == 0 || l:target == winnr()
     execute 'wincmd' toupper(a:dir)
+    call s:AfterVoyage()
     return
   endif
 
@@ -112,6 +113,10 @@ function! tradewinds#softmove(dir) abort
     call win_gotoid(l:winid)
   endif
 
+  call s:AfterVoyage()
+endfunction
+
+function! s:AfterVoyage()
   if exists('#User#TradeWindsAfterVoyage')
     doautocmd <nomodeline> User TradeWindsAfterVoyage
   endif
