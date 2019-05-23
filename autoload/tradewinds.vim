@@ -31,7 +31,11 @@ function! tradewinds#softmove(dir) abort
 
   " get window in target direction instead of using
   " wincmd because sizes might change when splitting
-  let l:target = tradewinds#winindir#get(a:dir)
+  if has('patch-8.1.1140')
+    let l:target = winnr(a:dir)
+  else
+    let l:target = tradewinds#winindir#get(a:dir)
+  endif
 
   " allow the user to cancel
   if exists('g:tradewinds#prepare')
