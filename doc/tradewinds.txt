@@ -174,7 +174,14 @@ If you want full control, make your own mappings
 trade winds won't try to make its usual maps if you have made your own,
 and it wont step on your existing maps.
 
-                                                        *TradewindsMove*
+                                                     *tradewinds-terminal-maps*
+
+In vim only, the same maps are available in the :terminal.  To disable these,
+>
+    let g:tradewinds_no_terminal_maps = 1
+<
+                                                               *TradewindsMove*
+
 Alternatively, you can make maps which use the `TradewindsMove` command:
 >
     let g:tradewinds_no_maps = 1

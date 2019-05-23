@@ -25,6 +25,14 @@ nnoremap <silent> <plug>(tradewinds-j) :<c-u>TradewindsMove j<cr>
 nnoremap <silent> <plug>(tradewinds-k) :<c-u>TradewindsMove k<cr>
 nnoremap <silent> <plug>(tradewinds-l) :<c-u>TradewindsMove l<cr>
 
+" terminal maps
+if has('terminal')
+  tnoremap <silent> <plug>(tradewinds-h) <c-w>:<c-u>TradewindsMove h<cr>
+  tnoremap <silent> <plug>(tradewinds-j) <c-w>:<c-u>TradewindsMove j<cr>
+  tnoremap <silent> <plug>(tradewinds-k) <c-w>:<c-u>TradewindsMove k<cr>
+  tnoremap <silent> <plug>(tradewinds-l) <c-w>:<c-u>TradewindsMove l<cr>
+endif
+
 if !get(g:, 'tradewinds_no_maps', 0)
   function! s:map(mode, lhs, rhs, ...)
     if !hasmapto(a:rhs, a:mode)
@@ -38,6 +46,17 @@ if !get(g:, 'tradewinds_no_maps', 0)
   call s:map('n', s:pfx.'j', '<plug>(tradewinds-j)')
   call s:map('n', s:pfx.'k', '<plug>(tradewinds-k)')
   call s:map('n', s:pfx.'l', '<plug>(tradewinds-l)')
+
+  if has('terminal') && !get(g:, 'tradewinds_no_terminal_maps', 0)
+    call s:map('t', s:pfx.'h', '<plug>(tradewinds-h)')
+    call s:map('t', s:pfx.'j', '<plug>(tradewinds-j)')
+    call s:map('t', s:pfx.'k', '<plug>(tradewinds-k)')
+    call s:map('t', s:pfx.'l', '<plug>(tradewinds-l)')
+    if s:pfx ==# '<c-w>g'
+      call s:map('tnore', '<c-w><c-w>', '<c-w><c-w>')
+    endif
+  endif
+
   unlet s:pfx
 endif
 
