@@ -18,6 +18,61 @@ function! tradewinds#softmove(dir) abort
     return
   endif
 
+  return exists('*win_splitmove') ? s:newimpl(a:dir) : s:oldimpl(a:dir)
+endfunction
+
+function! s:newimpl(dir) abort
+  let l:pos = tradewinds#winindir#win_screenpos(0)
+  let l:target = winnr(a:dir)
+
+  " allow the user to cancel
+  if exists('g:tradewinds#prepare')
+    if call(g:tradewinds#prepare, [winnr(), l:target])
+      return
+    endif
+  endif
+
+  " hard HJKL movements can be used here
+  if l:target == 0 || l:target == winnr()
+    execute 'wincmd' toupper(a:dir)
+    call s:AfterVoyage()
+    return
+  endif
+
+  let l:targetid = win_getid(l:target)
+  let l:targetpos = tradewinds#winindir#win_screenpos(l:target)
+
+  " try to place the new window in the natural position
+  " - if the current window is at least as big as the target then
+  "   compare the cursor position and the midpoint of the target window
+  " - if the current window is smaller than the target
+  "   then compare the midpoints of the current and target windows
+  if a:dir ==# 'h' || a:dir ==# 'l'
+    if l:pos[0] +
+          \ (winheight(0) >= winheight(target)
+          \   ? winline()-1 : winheight(0) / 2)
+          \ <= l:targetpos[0] + winheight(target) / 2
+      let l:flags = { 'rightbelow': 0 }
+    else
+      let l:flags = { 'rightbelow': 1 }
+    endif
+  else
+    if l:pos[1] +
+          \ (winwidth(0) >= winwidth(target)
+          \   ? wincol()-1 : winwidth(0) / 2)
+          \ <= l:targetpos[1] + winwidth(target) / 2
+      let l:flags = { 'rightbelow': 0, 'vertical': 1 }
+    else
+      let l:flags = { 'rightbelow': 1, 'vertical': 1 }
+    endif
+  endif
+
+  call win_splitmove(winnr(), l:target, l:flags)
+
+  call s:AfterVoyage()
+endfunction
+
+function! s:oldimpl(dir) abort
   let l:bufnr = bufnr('')
   let l:winid = win_getid(winnr())
   let l:lastwinid = win_getid(winnr('#'))
